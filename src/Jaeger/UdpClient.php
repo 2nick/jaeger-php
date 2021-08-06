@@ -36,7 +36,7 @@ class UdpClient{
     public function __construct($hostPost, AgentClient $agentClient){
         list($this->host, $this->post) = explode(":", $hostPost);
         $this->agentClient = $agentClient;
-        $this->socket = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+        $this->socket = \socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
     }
 
 
@@ -58,7 +58,7 @@ class UdpClient{
         if(isset($buildThrift['len']) && $buildThrift['len'] && $this->isOpen()) {
             $len = $buildThrift['len'];
             $enitThrift = $buildThrift['thriftStr'];
-            $res = socket_sendto($this->socket, $enitThrift, $len, 0, $this->host, $this->post);
+            $res = \socket_sendto($this->socket, $enitThrift, $len, 0, $this->host, $this->post);
             if($res === false) {
                 throw new \Exception("emit failse");
             }
@@ -71,7 +71,7 @@ class UdpClient{
 
 
     public function close(){
-        socket_close($this->socket);
+        \socket_close($this->socket);
         $this->socket = null;
     }
 }
